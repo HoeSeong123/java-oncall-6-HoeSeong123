@@ -3,14 +3,10 @@ package oncall.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomCalendar {
-    private List<String> calendar;
+public class CalendarMaker {
 
-    public CustomCalendar(int month, String dayOfWeek) {
-        createCalendar(month, dayOfWeek);
-    }
-
-    public void createCalendar(int month, String dayOfWeek) {
+    public static List<String> createCalendar(int month, String dayOfWeek) {
+        List<String> calendar = new ArrayList<>();
         List<String> dayOfWeeks = DayOfWeek.getDayOfWeeks();
         int index = DayOfWeek.getNumberByName(dayOfWeek);
 
@@ -18,5 +14,7 @@ public class CustomCalendar {
             calendar.add(dayOfWeeks.get(index));
             index = (index + 1) % 7;
         }
+
+        return calendar;
     }
 }

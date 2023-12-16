@@ -30,6 +30,14 @@ public enum DayOfWeek {
         return name;
     }
 
+    public static boolean isWeekday(String dayOfWeek) {
+        return Arrays.stream(values())
+                .filter(day -> day.getName().equals(dayOfWeek))
+                .findFirst()
+                .map(day -> day.getNumber() < 5)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid day of week: " + dayOfWeek));
+    }
+
     public static int getNumberByName(String name) {
         return Arrays.stream(values())
                 .filter(day -> day.name.equals(name))
