@@ -11,6 +11,7 @@ import oncall.model.CustomCalendar;
 import oncall.model.CustomDate;
 import oncall.model.DayOfWeek;
 import oncall.model.Employees;
+import oncall.model.Week;
 import oncall.repository.PublicHolidayRepository;
 import oncall.view.InputView;
 import oncall.view.OutputView;
@@ -32,13 +33,13 @@ public class MainController {
     }
 
     private Employees readEmployee() {
-        Map<String, List<String>> employee = new HashMap<>();
+        Map<Week, List<String>> employee = new HashMap<>();
 
         List<String> weekdayEmployee = read(InputView::readWeekdayEmployee);
         List<String> weekEndEmployee = InputView.readWeekendEmployee(weekdayEmployee);
 
-        employee.put("평일", weekdayEmployee);
-        employee.put("휴일", weekEndEmployee);
+        employee.put(Week.WEEKDAY, weekdayEmployee);
+        employee.put(Week.HOLIDAY, weekEndEmployee);
 
         return new Employees(employee);
     }
