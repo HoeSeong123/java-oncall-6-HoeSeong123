@@ -9,6 +9,10 @@ import oncall.model.DayOfWeek;
 import oncall.repository.PublicHolidayRepository;
 
 public class OutputView {
+    private static final String MONTH = "월";
+    private static final String DATE = "일";
+    private static final String HOLIDAY = "(휴일)";
+
     private OutputView() {
     }
 
@@ -26,10 +30,10 @@ public class OutputView {
 
     private static String formatOutput(CustomDate customDate, String employee) {
         StringBuilder sb = new StringBuilder();
-        sb.append(customDate.getMonth() + "월 ");
-        sb.append(customDate.getDate() + "일");
+        sb.append(customDate.getMonth() + MONTH + SPACE.get());
+        sb.append(customDate.getDate() + DATE);
         if (PublicHolidayRepository.isHoliday(customDate) && DayOfWeek.isWeekday(customDate.getDayOfWeek())) {
-            sb.append("(휴일)");
+            sb.append(HOLIDAY);
         }
 
         sb.append(SPACE.get() + customDate.getDayOfWeek());
@@ -37,4 +41,5 @@ public class OutputView {
 
         return sb.toString();
     }
+
 }
