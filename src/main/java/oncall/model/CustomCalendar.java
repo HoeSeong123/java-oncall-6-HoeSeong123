@@ -1,14 +1,16 @@
-package oncall.repository;
+package oncall.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import oncall.model.DayOfWeek;
-import oncall.model.Month;
 
-public class CalendarRepository {
-    public static final List<String> calendar = new ArrayList<>();
+public class CustomCalendar {
+    private List<String> calendar;
 
-    public static void createCalendar(int month, String dayOfWeek) {
+    public CustomCalendar(int month, String dayOfWeek) {
+        createCalendar(month, dayOfWeek);
+    }
+
+    public void createCalendar(int month, String dayOfWeek) {
         List<String> dayOfWeeks = DayOfWeek.getDayOfWeeks();
         int index = DayOfWeek.getNumberByName(dayOfWeek);
 
