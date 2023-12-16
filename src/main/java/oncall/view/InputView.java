@@ -5,6 +5,7 @@ import static oncall.util.message.GlobalMessage.COMMA;
 import camp.nextstep.edu.missionutils.Console;
 import java.util.List;
 import oncall.util.Util;
+import oncall.util.validator.MonthDayValidator;
 
 public class InputView {
     private InputView() {
@@ -13,6 +14,7 @@ public class InputView {
     public static List<String> readMonthAndStartDay() {
         System.out.print(Message.INPUT_MONTH_START_DAY.message);
         String input = Console.readLine();
+        MonthDayValidator.validate(COMMA.get(), input);
 
         return Util.splitToList(COMMA.get(), input);
     }
