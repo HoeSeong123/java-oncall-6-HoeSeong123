@@ -20,8 +20,17 @@ public class CustomDate {
         return dayOfWeek;
     }
 
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDate() {
+        return date;
+    }
+
     public boolean equals(CustomDate customDate) {
         return customDate.month == this.month && customDate.date == this.date;
     }
+
 }
 

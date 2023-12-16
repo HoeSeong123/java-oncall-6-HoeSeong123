@@ -12,6 +12,7 @@ import oncall.model.CustomDate;
 import oncall.model.DayOfWeek;
 import oncall.repository.HolidayRepository;
 import oncall.view.InputView;
+import oncall.view.OutputView;
 
 public class MainController {
     public void run() {
@@ -20,6 +21,8 @@ public class MainController {
 
         List<String> result = assignEmployee(customCalendar, employee);
         result = checkDouble(result);
+
+        OutputView.printResult(customCalendar, result);
     }
 
     private CustomCalendar createCustomCalendar() {
@@ -79,8 +82,6 @@ public class MainController {
             }
         }
 
-        //TODO : 제출 전 지우기
-        System.out.println(result);
         return result;
     }
 }
