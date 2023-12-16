@@ -17,7 +17,7 @@ public class CustomCalendar {
         List<String> dayOfWeeks = DayOfWeek.getDayOfWeeks();
         int index = DayOfWeek.getNumberByName(dayOfWeek);
 
-        for (int i = 0; i < Month.getMaxDateByMonth(month); i++) {
+        for (int i = 0; i <= Month.getMaxDateByMonth(month); i++) {
             calendar.add(new CustomDate(month, i + 1, dayOfWeeks.get(index)));
             index = (index + 1) % 7;
         }

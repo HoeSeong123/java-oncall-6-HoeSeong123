@@ -3,6 +3,7 @@ package oncall.controller;
 import static oncall.util.RetryUtil.read;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,8 @@ public class MainController {
         CustomCalendar customCalendar = createCustomCalendar();
         Map<String, List<String>> employee = read(this::readEmployee);
 
-        assignEmployee(customCalendar, employee);
+        List<String> result = assignEmployee(customCalendar, employee);
+        result = checkDouble(result);
     }
 
     private CustomCalendar createCustomCalendar() {
@@ -38,31 +40,47 @@ public class MainController {
         return employee;
     }
 
-    private void assignEmployee(CustomCalendar customCalendar, Map<String, List<String>> employee) {
+    private List<String> assignEmployee(CustomCalendar customCalendar, Map<String, List<String>> employee) {
         List<String> result = new ArrayList<>();
         List<String> weekdayEmployee = employee.get("평일");
         List<String> weekendEmployee = employee.get("휴일");
         int weekdayIndex = 0;
         int weekendIndex = 0;
 
-        for (CustomDate dayOfWeek : customCalendar.getCalendar()) {
-            if (HolidayRepository.isHoliday(dayOfWeek)) {
+        for (int i = 0; i < customCalendar.getCalendar().size(); i++) {
+            CustomDate date = customCalendar.getCalendar().get(i);
+            if (HolidayRepository.isHoliday(date)) {
                 result.add(weekendEmployee.get(weekendIndex));
                 weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
                 continue;
             }
 
-            if (DayOfWeek.isWeekday(dayOfWeek.getDayOfWeek())) {
+            if (DayOfWeek.isWeekday(date.getDayOfWeek())) {
                 result.add(weekdayEmployee.get(weekdayIndex));
                 weekdayIndex = (weekdayIndex + 1) % weekdayEmployee.size();
                 continue;
             }
-            if (!DayOfWeek.isWeekday(dayOfWeek.getDayOfWeek())) {
+            if (!DayOfWeek.isWeekday(date.getDayOfWeek())) {
                 result.add(weekendEmployee.get(weekendIndex));
                 weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
             }
         }
 
+        return result;
+    }
+
+    private List<String> checkDouble(List<String> result) {
+        for (int i = 0; i < result.size() - 1; i++) {
+            String previousEmployee = result.get(i);
+            String currentEmployee = result.get(i + 1);
+
+            if (previousEmployee.equals(currentEmployee)) {
+                Collections.swap(result, i + 1, i + 2);
+            }
+        }
+
+        //TODO : 제출 전 지우기
         System.out.println(result);
+        return result;
     }
 }
