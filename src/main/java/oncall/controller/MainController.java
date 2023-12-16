@@ -20,7 +20,6 @@ public class MainController {
         Map<String, List<String>> employee = read(this::readEmployee);
 
         List<String> result = assignEmployee(customCalendar, employee);
-        result = checkDouble(result);
 
         OutputView.printResult(customCalendar, result);
     }
@@ -69,10 +68,12 @@ public class MainController {
             }
         }
 
+        checkDouble(result);
+
         return result;
     }
 
-    private List<String> checkDouble(List<String> result) {
+    private void checkDouble(List<String> result) {
         for (int i = 0; i < result.size() - 1; i++) {
             String previousEmployee = result.get(i);
             String currentEmployee = result.get(i + 1);
@@ -81,7 +82,5 @@ public class MainController {
                 Collections.swap(result, i + 1, i + 2);
             }
         }
-
-        return result;
     }
 }
