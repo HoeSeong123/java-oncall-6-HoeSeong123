@@ -7,6 +7,7 @@ import java.util.List;
 import oncall.util.Util;
 import oncall.util.validator.MonthDayValidator;
 import oncall.util.validator.WeekdayEmployeeValidator;
+import oncall.util.validator.WeekendEmployeeValidator;
 
 public class InputView {
     private InputView() {
@@ -31,6 +32,7 @@ public class InputView {
     public static List<String> readWeekendEmployee(List<String> weekdayEmployee) {
         System.out.print(Message.INPUT_WEEKEND_EMPLOYEE.message);
         String input = Console.readLine();
+        WeekendEmployeeValidator.validate(COMMA.get(), input, weekdayEmployee);
 
         return Util.splitToList(COMMA.get(), input);
     }
