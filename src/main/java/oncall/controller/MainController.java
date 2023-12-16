@@ -10,6 +10,7 @@ import java.util.Map;
 import oncall.model.CustomCalendar;
 import oncall.model.CustomDate;
 import oncall.model.DayOfWeek;
+import oncall.model.Employees;
 import oncall.repository.PublicHolidayRepository;
 import oncall.view.InputView;
 import oncall.view.OutputView;
@@ -17,7 +18,7 @@ import oncall.view.OutputView;
 public class MainController {
     public void run() {
         CustomCalendar customCalendar = createCustomCalendar();
-        Map<String, List<String>> employee = read(this::readEmployee);
+        Employees employee = read(this::readEmployee);
 
         List<String> result = assignEmployee(customCalendar, employee);
 
@@ -30,7 +31,7 @@ public class MainController {
         return new CustomCalendar(monthAndDay.get(0), monthAndDay.get(1));
     }
 
-    private Map<String, List<String>> readEmployee() {
+    private Employees readEmployee() {
         Map<String, List<String>> employee = new HashMap<>();
 
         List<String> weekdayEmployee = read(InputView::readWeekdayEmployee);
@@ -39,33 +40,32 @@ public class MainController {
         employee.put("평일", weekdayEmployee);
         employee.put("휴일", weekEndEmployee);
 
-        return employee;
+        return new Employees(employee);
     }
 
-    private List<String> assignEmployee(CustomCalendar customCalendar, Map<String, List<String>> employee) {
+    private List<String> assignEmployee(CustomCalendar customCalendar, Employees employees) {
         List<String> result = new ArrayList<>();
-        List<String> weekdayEmployee = employee.get("평일");
-        List<String> weekendEmployee = employee.get("휴일");
-        int weekdayIndex = 0;
-        int weekendIndex = 0;
 
         for (int i = 0; i < customCalendar.getCalendar().size(); i++) {
-            CustomDate date = customCalendar.getCalendar().get(i);
-
-            if (DayOfWeek.isWeekday(date.getDayOfWeek())) {
-                result.add(weekdayEmployee.get(weekdayIndex));
-                weekdayIndex = (weekdayIndex + 1) % weekdayEmployee.size();
-                continue;
-            }
-            if (!DayOfWeek.isWeekday(date.getDayOfWeek()) || PublicHolidayRepository.isHoliday(date)) {
-                result.add(weekendEmployee.get(weekendIndex));
-                weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
-            }
+            String employee = findEmployee(customCalendar, employees, i);
+            result.add(employee);
         }
 
         checkDouble(result);
 
         return result;
+    }
+
+    private String findEmployee(CustomCalendar customCalendar, Employees employees, int index) {
+        CustomDate date = customCalendar.getCalendar().get(index);
+        if (isHoliday(date)) {
+            return employees.getWeekendEmployee();
+        }
+        return employees.getWeekdayEmployee();
+    }
+
+    private boolean isHoliday(CustomDate date) {
+        return !DayOfWeek.isWeekday(date.getDayOfWeek()) || PublicHolidayRepository.isHoliday(date);
     }
 
     private void checkDouble(List<String> result) {
