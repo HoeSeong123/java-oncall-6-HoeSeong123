@@ -52,13 +52,13 @@ public class MainController {
             result.add(employee);
         }
 
-        checkDouble(result);
+        checkDouble(customCalendar, result);
 
         return result;
     }
 
     private String findEmployee(CustomCalendar customCalendar, Employees employees, int index) {
-        CustomDate date = customCalendar.getCalendar().get(index);
+        CustomDate date = customCalendar.getDate(index);
         if (isHoliday(date)) {
             return employees.getWeekendEmployee();
         }
@@ -69,13 +69,21 @@ public class MainController {
         return !DayOfWeek.isWeekday(date.getDayOfWeek()) || PublicHolidayRepository.isHoliday(date);
     }
 
-    private void checkDouble(List<String> result) {
-        for (int i = 0; i < result.size() - 1; i++) {
-            String previousEmployee = result.get(i);
-            String currentEmployee = result.get(i + 1);
+    private void checkDouble(CustomCalendar customCalendar, List<String> result) {
+        for (int i = 1; i < result.size(); i++) {
+            CustomDate customDate = customCalendar.getDate(i);
+            String previousEmployee = result.get(i - 1);
+            String currentEmployee = result.get(i);
 
             if (previousEmployee.equals(currentEmployee)) {
-                Collections.swap(result, i + 1, i + 2);
+                int nextEmployeeIndex = i;
+                if (isHoliday(customDate)) {
+                    nextEmployeeIndex = customCalendar.findNextHoliday(i);
+                }
+                if (!isHoliday(customDate)) {
+                    nextEmployeeIndex = customCalendar.findNextWeekday(i);
+                }
+                Collections.swap(result, i, nextEmployeeIndex);
             }
         }
     }

@@ -3,6 +3,7 @@ package oncall.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import oncall.repository.PublicHolidayRepository;
 import oncall.util.Util;
 
 public class CustomCalendar {
@@ -25,5 +26,31 @@ public class CustomCalendar {
 
     public List<CustomDate> getCalendar() {
         return Collections.unmodifiableList(calendar);
+    }
+
+    public CustomDate getDate(int index) {
+        return calendar.get(index);
+    }
+
+    public int findNextHoliday(int index) {
+        for (int i = index + 1; i < calendar.size(); i++) {
+            CustomDate date = calendar.get(i);
+            if (!DayOfWeek.isWeekday(date.getDayOfWeek()) || PublicHolidayRepository.isHoliday(date)) {
+                return i;
+            }
+        }
+
+        return index;
+    }
+
+    public int findNextWeekday(int index) {
+        for (int i = index + 1; i < calendar.size(); i++) {
+            CustomDate date = calendar.get(i);
+            if (DayOfWeek.isWeekday(date.getDayOfWeek())) {
+                return i;
+            }
+        }
+
+        return index;
     }
 }
