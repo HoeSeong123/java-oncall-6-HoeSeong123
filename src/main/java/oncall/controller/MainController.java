@@ -10,7 +10,7 @@ import java.util.Map;
 import oncall.model.CustomCalendar;
 import oncall.model.CustomDate;
 import oncall.model.DayOfWeek;
-import oncall.repository.HolidayRepository;
+import oncall.repository.PublicHolidayRepository;
 import oncall.view.InputView;
 import oncall.view.OutputView;
 
@@ -52,7 +52,7 @@ public class MainController {
 
         for (int i = 0; i < customCalendar.getCalendar().size(); i++) {
             CustomDate date = customCalendar.getCalendar().get(i);
-            if (HolidayRepository.isHoliday(date)) {
+            if (PublicHolidayRepository.isHoliday(date)) {
                 result.add(weekendEmployee.get(weekendIndex));
                 weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
                 continue;

@@ -3,7 +3,7 @@ package oncall.repository;
 import java.util.List;
 import oncall.model.CustomDate;
 
-public class HolidayRepository {
+public class PublicHolidayRepository {
     public static final List<CustomDate> holidays = List.of(
             new CustomDate(1, 1),
             new CustomDate(3, 1),
