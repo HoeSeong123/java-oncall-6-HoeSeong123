@@ -15,5 +15,13 @@ public class HolidayRepository {
             new CustomDate(12, 25)
     );
 
+    public static boolean isHoliday(CustomDate date) {
+        for (CustomDate holiday : holidays) {
+            if (holiday.equals(date)) {
+                return true;
+            }
+        }
 
+        return false;
+    }
 }

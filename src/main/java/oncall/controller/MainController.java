@@ -6,23 +6,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import oncall.model.CalendarMaker;
+import oncall.model.CustomCalendar;
+import oncall.model.CustomDate;
 import oncall.model.DayOfWeek;
-import oncall.util.Util;
+import oncall.repository.HolidayRepository;
 import oncall.view.InputView;
 
 public class MainController {
     public void run() {
-        List<String> customCalendar = createCustomCalendar();
+        CustomCalendar customCalendar = createCustomCalendar();
         Map<String, List<String>> employee = read(this::readEmployee);
 
         assignEmployee(customCalendar, employee);
     }
 
-    private List<String> createCustomCalendar() {
+    private CustomCalendar createCustomCalendar() {
         List<String> monthAndDay = read(InputView::readMonthAndStartDay);
 
-        return CalendarMaker.createCalendar(Util.convertToInt(monthAndDay.get(0)), monthAndDay.get(1));
+        return new CustomCalendar(monthAndDay.get(0), monthAndDay.get(1));
     }
 
     private Map<String, List<String>> readEmployee() {
@@ -37,19 +38,26 @@ public class MainController {
         return employee;
     }
 
-    private void assignEmployee(List<String> customCalendar, Map<String, List<String>> employee) {
+    private void assignEmployee(CustomCalendar customCalendar, Map<String, List<String>> employee) {
         List<String> result = new ArrayList<>();
         List<String> weekdayEmployee = employee.get("평일");
         List<String> weekendEmployee = employee.get("휴일");
         int weekdayIndex = 0;
         int weekendIndex = 0;
 
-        for (String dayOfWeek : customCalendar) {
-            if (DayOfWeek.isWeekday(dayOfWeek)) {
+        for (CustomDate dayOfWeek : customCalendar.getCalendar()) {
+            if (HolidayRepository.isHoliday(dayOfWeek)) {
+                result.add(weekendEmployee.get(weekendIndex));
+                weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
+                continue;
+            }
+
+            if (DayOfWeek.isWeekday(dayOfWeek.getDayOfWeek())) {
                 result.add(weekdayEmployee.get(weekdayIndex));
                 weekdayIndex = (weekdayIndex + 1) % weekdayEmployee.size();
+                continue;
             }
-            if (!DayOfWeek.isWeekday(dayOfWeek)) {
+            if (!DayOfWeek.isWeekday(dayOfWeek.getDayOfWeek())) {
                 result.add(weekendEmployee.get(weekendIndex));
                 weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
             }
