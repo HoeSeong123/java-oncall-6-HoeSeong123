@@ -11,6 +11,7 @@ public class EmployeeValidator {
         Validator.validateAvailableForm(substring, input);
         List<String> employee = Util.splitToList(substring, input);
         validateDuplicate(employee);
+        validateSize(employee);
     }
 
     private static void validateDuplicate(List<String> input) {
@@ -19,6 +20,12 @@ public class EmployeeValidator {
                 .toList();
 
         if (input.size() != distinctElements.size()) {
+            throw new IllegalArgumentException(INVALID_INPUT.get());
+        }
+    }
+
+    private static void validateSize(List<String> input) {
+        if (input.size() < 5 || input.size() > 35) {
             throw new IllegalArgumentException(INVALID_INPUT.get());
         }
     }
