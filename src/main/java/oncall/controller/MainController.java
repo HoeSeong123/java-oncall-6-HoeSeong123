@@ -76,15 +76,21 @@ public class MainController {
             String currentEmployee = result.get(i);
 
             if (previousEmployee.equals(currentEmployee)) {
-                int nextEmployeeIndex = i;
-                if (isHoliday(customDate)) {
-                    nextEmployeeIndex = customCalendar.findNextHoliday(i);
-                }
-                if (!isHoliday(customDate)) {
-                    nextEmployeeIndex = customCalendar.findNextWeekday(i);
-                }
+                int nextEmployeeIndex = findNextEmployee(customCalendar, customDate, i);
                 Collections.swap(result, i, nextEmployeeIndex);
             }
         }
+    }
+
+    private int findNextEmployee(CustomCalendar customCalendar, CustomDate customDate, int index) {
+        int nextEmployeeIndex = index;
+        if (isHoliday(customDate)) {
+            nextEmployeeIndex = customCalendar.findNextHoliday(index);
+        }
+        if (!isHoliday(customDate)) {
+            nextEmployeeIndex = customCalendar.findNextWeekday(index);
+        }
+
+        return nextEmployeeIndex;
     }
 }
