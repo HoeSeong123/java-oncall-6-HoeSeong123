@@ -51,18 +51,13 @@ public class MainController {
 
         for (int i = 0; i < customCalendar.getCalendar().size(); i++) {
             CustomDate date = customCalendar.getCalendar().get(i);
-            if (PublicHolidayRepository.isHoliday(date)) {
-                result.add(weekendEmployee.get(weekendIndex));
-                weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
-                continue;
-            }
 
             if (DayOfWeek.isWeekday(date.getDayOfWeek())) {
                 result.add(weekdayEmployee.get(weekdayIndex));
                 weekdayIndex = (weekdayIndex + 1) % weekdayEmployee.size();
                 continue;
             }
-            if (!DayOfWeek.isWeekday(date.getDayOfWeek())) {
+            if (!DayOfWeek.isWeekday(date.getDayOfWeek()) || PublicHolidayRepository.isHoliday(date)) {
                 result.add(weekendEmployee.get(weekendIndex));
                 weekendIndex = (weekendIndex + 1) % weekendEmployee.size();
             }
