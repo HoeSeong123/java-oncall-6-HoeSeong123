@@ -9,5 +9,6 @@ public class MainController {
     public void run() {
         List<String> monthAndDay = read(InputView::readMonthAndStartDay);
         List<String> weekdayEmployee = read(InputView::readWeekdayEmployee);
+        List<String> weekEndEmployee = read(InputView::readWeekendEmployee, weekdayEmployee);
     }
 }

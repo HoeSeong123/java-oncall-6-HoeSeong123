@@ -5,14 +5,14 @@ import static oncall.util.message.ExceptionMessage.INVALID_INPUT;
 import java.util.List;
 import oncall.util.Util;
 
-public class EmployeeValidator {
+public class WeekdayEmployeeValidator {
     public static void validate(String substring, String input) {
         Validator.validateBlank(input);
         Validator.validateAvailableForm(substring, input);
         List<String> employee = Util.splitToList(substring, input);
         validateDuplicate(employee);
         validateSize(employee);
-        employee.forEach(EmployeeValidator::validateNameSize);
+        employee.forEach(WeekdayEmployeeValidator::validateNameSize);
     }
 
     private static void validateDuplicate(List<String> input) {

@@ -5,8 +5,8 @@ import static oncall.util.message.GlobalMessage.COMMA;
 import camp.nextstep.edu.missionutils.Console;
 import java.util.List;
 import oncall.util.Util;
-import oncall.util.validator.EmployeeValidator;
 import oncall.util.validator.MonthDayValidator;
+import oncall.util.validator.WeekdayEmployeeValidator;
 
 public class InputView {
     private InputView() {
@@ -23,14 +23,23 @@ public class InputView {
     public static List<String> readWeekdayEmployee() {
         System.out.print(Message.INPUT_WEEKDAY_EMPLOYEE.message);
         String input = Console.readLine();
-        EmployeeValidator.validate(COMMA.get(), input);
+        WeekdayEmployeeValidator.validate(COMMA.get(), input);
+
+        return Util.splitToList(COMMA.get(), input);
+    }
+
+    public static List<String> readWeekendEmployee(List<String> weekdayEmployee) {
+        System.out.print(Message.INPUT_WEEKEND_EMPLOYEE.message);
+        String input = Console.readLine();
 
         return Util.splitToList(COMMA.get(), input);
     }
 
     private enum Message {
         INPUT_MONTH_START_DAY("비상 근무를 배정할 월과 시작 요일을 입력하세요> "),
-        INPUT_WEEKDAY_EMPLOYEE("평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
+        INPUT_WEEKDAY_EMPLOYEE("평일 비상 근무 순번대로 사원 닉네임을 입력하세요> "),
+
+        INPUT_WEEKEND_EMPLOYEE("휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ");
 
 
         private final String message;
