@@ -5,6 +5,7 @@ import static oncall.util.message.GlobalMessage.COMMA;
 import camp.nextstep.edu.missionutils.Console;
 import java.util.List;
 import oncall.util.Util;
+import oncall.util.validator.EmployeeValidator;
 import oncall.util.validator.MonthDayValidator;
 
 public class InputView {
@@ -22,6 +23,7 @@ public class InputView {
     public static List<String> readWeekdayEmployee() {
         System.out.print(Message.INPUT_WEEKDAY_EMPLOYEE.message);
         String input = Console.readLine();
+        EmployeeValidator.validate(COMMA.get(), input);
 
         return Util.splitToList(COMMA.get(), input);
     }
