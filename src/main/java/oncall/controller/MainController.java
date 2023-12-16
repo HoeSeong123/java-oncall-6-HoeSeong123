@@ -2,12 +2,10 @@ package oncall.controller;
 
 import static oncall.util.RetryUtil.read;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import oncall.model.CustomCalendar;
-import oncall.model.DayOfWeek;
 import oncall.util.Util;
 import oncall.view.InputView;
 
