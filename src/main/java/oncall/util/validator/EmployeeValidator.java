@@ -12,6 +12,7 @@ public class EmployeeValidator {
         List<String> employee = Util.splitToList(substring, input);
         validateDuplicate(employee);
         validateSize(employee);
+        employee.forEach(EmployeeValidator::validateNameSize);
     }
 
     private static void validateDuplicate(List<String> input) {
@@ -26,6 +27,12 @@ public class EmployeeValidator {
 
     private static void validateSize(List<String> input) {
         if (input.size() < 5 || input.size() > 35) {
+            throw new IllegalArgumentException(INVALID_INPUT.get());
+        }
+    }
+
+    private static void validateNameSize(String input) {
+        if (input.isEmpty() || input.length() > 5) {
             throw new IllegalArgumentException(INVALID_INPUT.get());
         }
     }
